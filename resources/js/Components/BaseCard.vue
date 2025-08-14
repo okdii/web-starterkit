@@ -11,8 +11,8 @@ const props = defineProps({
 <template>
     <Card class="my-3">
         <template #title>
-            <div class="flex flex-wrap align-center justify-space-between">
-                <div class="pa-1">
+            <div class="flex flex-wrap content-center justify-between">
+                <div class="p-1">
                     <p class="font-bold text-lg">{{ props.title }}</p>
                 </div>
                 <div
@@ -31,12 +31,12 @@ const props = defineProps({
         </template>
         <template #footer>
             <div
-                class="flex flex-row flex-wrap gap-1 w-full"
+                class="flex flex-row flex-wrap gap-1 w-full mt-3"
                 v-if="props.back_route"
             >
                 <div class="flex w-full xl:w-1/3">
                     <Link :href="back_route" class="w-full xl:w-1/5">
-                        <Button color="red" class="w-full">Back</Button>
+                        <Button severity="danger" class="w-full">Back</Button>
                     </Link>
                 </div>
             </div>

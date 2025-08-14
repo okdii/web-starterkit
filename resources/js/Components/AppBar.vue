@@ -55,6 +55,11 @@ const darkMode = ref(false);
 const toggleDarkMode = () => {
     darkMode.value = !darkMode.value;
     document.documentElement.classList.toggle("dark");
+    if (darkMode.value) {
+        document.documentElement.classList.add("p-dark"); // enables dark mode
+    } else {
+        document.documentElement.classList.remove("p-dark"); // disables dark mode
+    }
 };
 </script>
 

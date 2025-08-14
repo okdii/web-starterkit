@@ -9,7 +9,9 @@ const toggleDrawer = () => {
 };
 </script>
 <template>
-    <div class="bg-zinc-50 h-screen">
+    <Toast />
+    <ConfirmDialog />
+    <div>
         <div>
             <AppBar @toggle-menu="toggleDrawer" />
             <SideMenu v-model:visible="drawerVisible" />

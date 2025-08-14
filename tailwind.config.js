@@ -19,7 +19,7 @@ export default {
         },
     },
 
-    darkMode: ["selector", '[class="p-dark"]'],
+    darkMode: ["class", ".p-dark"],
 
     plugins: [forms, PrimeUI],
 };

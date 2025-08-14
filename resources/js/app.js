@@ -11,6 +11,10 @@ import PrimeVue from "primevue/config";
 import { definePreset } from "@primeuix/themes";
 import Aura from "@primeuix/themes/aura";
 import "primeicons/primeicons.css";
+import ToastService from "primevue/toastservice";
+import Toast from "primevue/toast";
+import ConfirmationService from "primevue/confirmationservice";
+import ConfirmDialog from "primevue/confirmdialog";
 
 const MyPreset = definePreset(Aura, {
     semantic: {
@@ -54,6 +58,10 @@ createInertiaApp({
                 },
             })
             .use(ZiggyVue)
+            .use(ToastService)
+            .use(ConfirmationService)
+            .component("Toast", Toast)
+            .component("ConfirmDialog", ConfirmDialog)
             .mount(el);
     },
     progress: {
