@@ -28,6 +28,8 @@ class Permission extends SpatiePermission
         'updated_by',
     ];
 
+    protected $hidden = ['id'];
+
     /**
      * Addition Attribute
      */

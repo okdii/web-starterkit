@@ -31,6 +31,7 @@
         "primevue": "^4.3.6",
         "tailwindcss-primeui": "^0.6.1",
         "vee-validate": "^4.15.1",
+        "vuedraggable": "^4.1.0",
         "yup": "^1.7.0",
         "zod": "^4.0.15"
     }

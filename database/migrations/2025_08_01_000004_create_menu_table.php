@@ -14,14 +14,13 @@ return new class extends Migration
         Schema::create('menu', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('icon');
-            $table->integer('parent')->default('0');
-            $table->string('url')->nullable();
-            $table->tinyInteger('header')->default('0');
-            $table->tinyInteger('sort')->default('0');
+            $table->string('icon')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('menu');
             $table->unsignedBigInteger('permission_id')->nullable();
             $table->foreign('permission_id')->references('id')->on('permissions');
-            $table->tinyInteger('active')->default('1');
+            $table->tinyInteger('order')->default(0);
+            $table->tinyInteger('active')->default(1);
 
             $table->DBExecutors();
             $table->DBSoftDeletes();

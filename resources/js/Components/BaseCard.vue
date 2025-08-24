@@ -30,12 +30,16 @@ const props = defineProps({
             </div>
         </template>
         <template #footer>
-            <div
-                class="flex flex-row flex-wrap gap-1 w-full mt-3"
-                v-if="props.back_route"
-            >
+            <div v-if="slots.footer_button">
+                <slot name="footer_button"></slot>
+            </div>
+            <div v-else class="flex flex-row flex-wrap gap-1 w-full mt-3">
                 <div class="flex w-full xl:w-1/3">
-                    <Link :href="back_route" class="w-full xl:w-1/5">
+                    <Link
+                        v-if="props.back_route"
+                        :href="back_route"
+                        class="w-full xl:w-1/5"
+                    >
                         <Button severity="danger" class="w-full">Back</Button>
                     </Link>
                 </div>

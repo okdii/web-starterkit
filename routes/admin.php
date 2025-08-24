@@ -26,6 +26,12 @@ Route::resource('module-permission', App\Http\Controllers\Admin\ACL\ModulePermis
 Route::resource('role-module', App\Http\Controllers\Admin\ACL\RoleModuleController::class)->names('role-module');
 
 /**
+ * MENU
+ */
+Route::resource('menu', App\Http\Controllers\Admin\Menu\MenuController::class)->names('menu');
+
+
+/**
  * AJAX
  */
 Route::group([
@@ -52,5 +58,9 @@ Route::group([
     Route::post('module-permission/dt-permission', [App\Http\Controllers\Admin\ACL\ModulePermissionController::class, 'getPermissionDt'])->name('module-permission.dt-permission');
     // Role - Module
     Route::post('role-module/dt-module', [App\Http\Controllers\Admin\ACL\RoleModuleController::class, 'getModuleDt'])->name('role-module.dt-module');
-
+    
+    /**
+     * MENU
+    */
+    Route::post('menu/update-tree', [App\Http\Controllers\Admin\Menu\MenuController::class, 'updateTree'])->name('menu.update-tree');
 });

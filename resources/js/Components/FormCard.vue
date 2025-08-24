@@ -46,6 +46,10 @@ const submit = props.form_validator.handleSubmit(async (values) => {
         });
     }
 });
+
+const handleReset = () => {
+    props.form_validator.resetForm();
+};
 </script>
 <template>
     <Card class="my-3">
@@ -83,6 +87,7 @@ const submit = props.form_validator.handleSubmit(async (values) => {
                                 type="reset"
                                 severity="secondary"
                                 label="Reset"
+                                @click="handleReset"
                             />
                             <Button
                                 type="submit"

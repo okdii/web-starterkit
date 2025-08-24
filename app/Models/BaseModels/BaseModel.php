@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class BaseModel extends Model
+abstract class BaseModel extends Model
 {
     public static function boot()
     {

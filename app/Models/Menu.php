@@ -16,11 +16,9 @@ class Menu extends BaseModel
         'id',
         'name',
         'icon',
-        'parent',
-        'url',
-        'header',
+        'parent_id',
         'permission_id',
-        'sort',
+        'order',
         'active',
         
         'created_at',
@@ -31,10 +29,33 @@ class Menu extends BaseModel
         'deleted_by',
     ];
 
+    protected $hidden = ['id'];
+
     /**
      * Addition Attribute
      */
     protected $appends = [
-        'slug'
+        'slug',
+        'parentSlug'
     ];
+
+    public function getParentSlugAttribute()
+    {
+        return $this->relationParent?->slug();
+    }
+
+    public function relationParent()
+    {
+        return $this->belongsTo(Menu::class, 'parent_id');
+    }
+
+    public function relationChildren()
+    {
+        return $this->hasMany(Menu::class, 'parent_id');
+    }
+
+    public function relationPermission()
+    {
+        return $this->belongsTo(Permission::class, 'permission_id');
+    }
 }
