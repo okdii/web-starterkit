@@ -19,14 +19,22 @@ const MAX_DEPTH_ALLOWED = 2;
 const formDetail = {
     initialValues: {
         _method: "post",
-        treeData: props.treeData ?? [],
+        tree: props.treeData ?? [],
     },
 };
 const form = inertiaUseForm(formDetail.initialValues);
 const formValidator = useVeeForm(formDetail);
-const [treeData] = formValidator.defineField("treeData");
+const tree = ref(props.treeData ?? []);
+
+function stripParentReferences(nodes) {
+    return nodes.map(({ _parent, children, ...rest }) => ({
+        ...rest,
+        children: children ? stripParentReferences(children) : [],
+    }));
+}
+
 const submit = formValidator.handleSubmit(async (values) => {
-    // formValidator.tree = treeData;
+    form.tree = stripParentReferences(tree.value);
     showUpdateConfirm({
         accept: () => {
             form.post(route("admin.ajax.menu.update-tree"), {
@@ -49,7 +57,10 @@ function findParentNode(nodes, targetList) {
     for (const node of nodes) {
         if (node.children === targetList) return node;
         if (node.children) {
-            const found = findParentNode(node.children, targetList);
+            const found =
+                node.children.length > 0
+                    ? findParentNode(node.children, targetList)
+                    : null;
             if (found) return found;
         }
     }
@@ -67,7 +78,7 @@ const onMove = (evt) => {
 
     // Find the parent node of the target list (where dragged node will be dropped)
     const targetList = evt.relatedContext.list;
-    const targetParentNode = findParentNode(treeData, targetList);
+    const targetParentNode = findParentNode(tree.value, targetList);
 
     // If dropping at root, parent depth = -1
     const targetParentDepth = targetParentNode
@@ -94,9 +105,9 @@ const attachParentRefs = (nodes, parent = null) => {
 };
 
 watch(
-    treeData,
+    tree,
     () => {
-        attachParentRefs(treeData.value);
+        attachParentRefs(tree.value);
     },
     { immediate: true, deep: true }
 );
@@ -116,7 +127,7 @@ watch(
             </template>
             <template #content>
                 <draggable
-                    :list="treeData"
+                    :list="tree"
                     group="nodes"
                     item-key="slug"
                     handle=".drag-handle"

@@ -14,7 +14,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class User extends Authenticatable implements Auditable
 {
-    use HasFactory, Notifiable, HasRoles, HasHashSlug, CustomHashTraits;
+    use HasFactory, Notifiable, HasRoles, HasHashSlug, CustomHashTraits, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
@@ -26,8 +26,17 @@ class User extends Authenticatable implements Auditable
     ];
 
     protected $hidden = [
+        'id',
         'password',
         'remember_token',
+    ];
+
+    /**
+     * Addition Attribute
+     */
+    protected $appends = [
+        'slug',
+        'roleSlug'
     ];
 
     protected function casts(): array
@@ -38,5 +47,17 @@ class User extends Authenticatable implements Auditable
             'role'              => 'array',
             'status'            => \App\Enums\UserStatus::class
         ];
+    }
+
+    public function getRoleSlugAttribute()
+    {
+        $roles = [];
+        if($this->role) {
+            foreach ($this->role as $role) {
+                $roles[] = \App\Models\Role::find($role)->slug();
+            }
+        }
+
+        return $roles;
     }
 }

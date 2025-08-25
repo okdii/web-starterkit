@@ -26,6 +26,8 @@ class Role extends SpatieRole implements Auditable
         'updated_by',
     ];
 
+    protected $hidden = ['id'];
+
     /**
      * Addition Attribute
      */

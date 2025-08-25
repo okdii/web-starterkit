@@ -27,7 +27,7 @@ const formDetail = {
     },
     validationSchema: yup.object({
         name: yup.string().required("Name is required"),
-        route_name: yup.object().required("Route is required"),
+        route_name: yup.object(),
         icon: yup.object().required("Icon is required"),
     }),
 };
@@ -72,7 +72,7 @@ const [icon] = formValidator.defineField("icon");
                 <div class="flex flex-col gap-1">
                     <label for="route">Route Name</label>
                     <Select
-                        name="route.name"
+                        name="route"
                         :options="list_route"
                         v-model="route_name"
                         optionLabel="name"

@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from "vue";
 import BaseCard from "@/Components/BaseCard.vue";
-import CompServerSideDataTable from "@/Components/ServerSideDataTable.vue";
+import CompServerSideDataTable from "@/Components/Datatable/ServerSideDataTable.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import CompServerSideDataTableAction from "@/Components/ServerSideDataTableAction.vue";
+import CompServerSideDataTableAction from "@/Components/Datatable/ServerSideDataTableAction.vue";
 
 const props = defineProps({
     user_status: Object,

@@ -48,7 +48,7 @@ class MenuController extends Controller
     {
         $validate = $request->validate([
             'name'          => 'required|string|max:255',
-            'route_name'    => 'required|array',
+            'route_name'    => 'nullable|array',
             'icon'          => 'required|array',
         ]);
 
@@ -57,7 +57,9 @@ class MenuController extends Controller
             $menu                = new Menu;
             $menu->name          = $validate['name'];
             $menu->icon          = $validate['icon']['value'];
-            $menu->permission_id = \App\Models\Permission::decodeSlug($validate['route_name']['slug']);
+            if(isset($validate['route_name']['slug'])) {
+                $menu->permission_id = \App\Models\Permission::decodeSlug($validate['route_name']['slug']);
+            }
             $menu->save();
 
             DB::commit();
@@ -95,7 +97,7 @@ class MenuController extends Controller
     {
         $validate = $request->validate([
             'name'          => 'required|string|max:255',
-            'route_name'    => 'required|array',
+            'route_name'    => 'nullable|array',
             'icon'          => 'required|array',
         ]);
 
@@ -103,7 +105,9 @@ class MenuController extends Controller
         try {
             $menu->name          = $validate['name'];
             $menu->icon          = $validate['icon']['value'];
-            $menu->permission_id = \App\Models\Permission::decodeSlug($validate['route_name']['slug']);
+            if(isset($validate['route_name']['slug'])) {
+                $menu->permission_id = \App\Models\Permission::decodeSlug($validate['route_name']['slug']);
+            }
             $menu->save();
 
             DB::commit();
@@ -144,10 +148,10 @@ class MenuController extends Controller
             foreach ($flatten as $item) {
                 $menu = Menu::updateOrCreate(
                     [
-                        'id' => $item['id']
+                        'id' => Menu::decodeSlug($item['slug'])
                     ],
                     [
-                        'parent_id' => $item['parent_id'],
+                        'parent_id' => Menu::decodeSlug($item['parent_id']),
                         'name'      => $item['name'],
                         'order'     => $item['depth'],
                     ]
@@ -160,6 +164,7 @@ class MenuController extends Controller
             return to_route('admin.menu.index')->with($result);
         } catch (\Throwable $th) {
             DB::rollback();
+            dd($th);
             $result = array("severity" => "error", "summary" => "Update", "detail" => "Failed to update information");
             return to_route('admin.menu.index')->with($result);
         }

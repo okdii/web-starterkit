@@ -6,6 +6,12 @@ import Components from "unplugin-vue-components/vite";
 import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 
 export default defineConfig({
+    server: {
+        host: "127.0.0.1",
+        port: 5175,
+        origin: "http://multi_tenant.local:5175",
+        cors: true,
+    },
     plugins: [
         laravel({
             input: "resources/js/app.js",

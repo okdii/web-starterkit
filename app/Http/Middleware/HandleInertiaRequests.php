@@ -30,10 +30,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return [
+        $user           = auth()->user();
+        $menu_service   = new \App\Services\Admin\Menu\MenuService;
+        $dataArr    = [
             ...parent::share($request),
-            'auth' => [
-                'user' => $request->user(),
+            'app' => [
+                'app_name' => config('app.name'),
             ],
             'flash' => [
                 'severity' => fn () => $request->session()->get('severity'),
@@ -45,5 +47,19 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
         ];
+
+        if($user) {
+            $authData   = [
+                'auth' => [
+                    'user' => [
+                        'name' => $user->name
+                    ],
+                    'menu' => $menu_service->getMenu()
+                ],
+            ];
+            $dataArr = array_merge($dataArr, $authData);
+        }
+
+        return $dataArr;
     }
 }

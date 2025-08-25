@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Models\BaseModels\BaseModel;
 use App\Http\Traits\CustomHashTraits;
 use Balping\HashSlug\HasHashSlug;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Menu extends BaseModel
 {
-    use HasHashSlug, CustomHashTraits;
+    use HasHashSlug, CustomHashTraits, SoftDeletes;
 
     protected $table = "menu";
 
@@ -51,7 +52,7 @@ class Menu extends BaseModel
 
     public function relationChildren()
     {
-        return $this->hasMany(Menu::class, 'parent_id');
+        return $this->hasMany(Menu::class, 'parent_id')->with('relationChildren');
     }
 
     public function relationPermission()

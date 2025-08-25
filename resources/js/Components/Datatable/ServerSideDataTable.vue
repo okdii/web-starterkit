@@ -122,29 +122,38 @@ defineExpose({
                     </div>
                 </div>
 
-                <div
-                    v-show="showFilterForm"
-                    class="bg-slate-100 w-full p-3 mb-3"
+                <Transition
+                    enter-active-class="transition-all duration-300 ease-in-out overflow-hidden"
+                    enter-from-class="opacity-0 max-h-0"
+                    enter-to-class="opacity-100 max-h-96"
+                    leave-active-class="transition-all duration-300 ease-in-out overflow-hidden"
+                    leave-from-class="opacity-100 max-h-96"
+                    leave-to-class="opacity-0 max-h-0"
                 >
-                    <slot name="filter" />
+                    <div
+                        v-show="showFilterForm"
+                        class="bg-slate-100 w-full p-3 mb-3"
+                    >
+                        <slot name="filter" />
 
-                    <Divider />
+                        <Divider />
 
-                    <div class="flex justify-center gap-1">
-                        <Button
-                            type="reset"
-                            severity="secondary"
-                            label="Reset"
-                            @click="resetData"
-                        />
-                        <Button
-                            type="submit"
-                            severity="primary"
-                            label="Filter"
-                            @click="fetchData"
-                        />
+                        <div class="flex justify-center gap-1">
+                            <Button
+                                type="reset"
+                                severity="secondary"
+                                label="Reset"
+                                @click="resetData"
+                            />
+                            <Button
+                                type="submit"
+                                severity="primary"
+                                label="Filter"
+                                @click="fetchData"
+                            />
+                        </div>
                     </div>
-                </div>
+                </Transition>
             </template>
 
             <template #paginatorend>

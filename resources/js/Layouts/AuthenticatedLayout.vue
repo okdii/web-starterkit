@@ -1,6 +1,6 @@
 <script setup>
 import AppBar from "@/Components/AppBar.vue";
-import SideMenu from "@/Components/SideMenu.vue";
+import SidebarMenu from "@/Components/Menu/SidebarMenu.vue";
 import { ref } from "vue";
 
 const drawerVisible = ref(false);
@@ -14,7 +14,7 @@ const toggleDrawer = () => {
     <div>
         <div>
             <AppBar @toggle-menu="toggleDrawer" />
-            <SideMenu v-model:visible="drawerVisible" />
+            <SidebarMenu v-model:visible="drawerVisible" />
         </div>
 
         <div class="pb-4">

@@ -70,9 +70,12 @@ class UserController extends Controller
 
     public function create()
     {
+        $list_role = \App\Models\Role::select(['id', 'name'])->orderBy('name')->get();
+
         $returnArr = [
             'isCreate'  => true,
             'title'     => 'Create New User',
+            'list_role' => $list_role
         ];
 
         return Inertia::render('Admin/User/Form', $returnArr);
@@ -83,17 +86,24 @@ class UserController extends Controller
         $validate = $request->validate([
             'name'  => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'role'  => 'required|array',
         ]);
-        
+
         DB::beginTransaction();
         try {
             $user           = new User();
             $user->name     = $validate['name'];
             $user->email    = $validate['email'];
             $user->password = Hash::make('123456');
+            if (count($validate['role']) > 0) {
+                $user->role = array_map(fn ($item) => \App\Models\Role::decodeSlug($item), $validate['role']);
+            }
             $user->save();
 
             event(new Registered($user));
+
+            // Sync Role
+            \App\Models\Role::syncRole($user);
 
             DB::commit();
             $result = array("severity" => "success", "summary" => "Save", "detail" => "Information successfully saved");
@@ -117,10 +127,13 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        $list_role = \App\Models\Role::select(['id', 'name'])->orderBy('name')->get();
+
         $returnArr = [
             'user'      => $user,
             'isCreate'  => false,
             'title'     => 'Update User',
+            'list_role' => $list_role
         ];
 
         return Inertia::render('Admin/User/Form', $returnArr);
@@ -137,14 +150,21 @@ class UserController extends Controller
                 'email',
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
-            ]
+            ],
+            'role'  => 'required|array',
         ]);
         
         DB::beginTransaction();
         try {
             $user->name     = $validate['name'];
             $user->email    = $validate['email'];
+            if (count($validate['role']) > 0) {
+                $user->role = array_map(fn ($item) => \App\Models\Role::decodeSlug($item), $validate['role']);
+            }
             $user->save();
+
+            // Sync Role
+            \App\Models\Role::syncRole($user);
 
             DB::commit();
             $result = array("severity" => "success", "summary" => "Update", "detail" => "Information successfully updated");
