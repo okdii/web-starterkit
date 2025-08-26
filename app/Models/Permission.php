@@ -19,6 +19,7 @@ class Permission extends SpatiePermission
         'guard_name',
         'method',
         'url',
+        'controller',
         'function',
         'hash',
 

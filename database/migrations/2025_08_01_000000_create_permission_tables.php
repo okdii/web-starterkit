@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('guard_name', 125); // For MySQL 8.0 use string('guard_name', 125);
             $table->string('method', 6);
             $table->string('url');
+            $table->string('controller');
             $table->string('function');
             $table->string('hash')->index();
 

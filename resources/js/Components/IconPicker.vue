@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
 import { PrimeIcons } from "@primevue/core/api";
-console.log(PrimeIcons);
 
 const props = defineProps({
     modelValue: String,

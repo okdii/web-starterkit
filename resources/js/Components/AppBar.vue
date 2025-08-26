@@ -17,7 +17,7 @@ const items = ref([
                 label: "Profile",
                 icon: "pi pi-user",
                 command: () => {
-                    router.visit(route("profile.edit"));
+                    router.visit(route("shared.profile.edit"));
                 },
             },
             /* {
@@ -37,7 +37,7 @@ const items = ref([
                 icon: "pi pi-sign-out",
                 command: () => {
                     // Logout
-                    useForm({}).post(route("logout"));
+                    useForm({}).post(route("shared.logout"));
                 },
             },
         ],
