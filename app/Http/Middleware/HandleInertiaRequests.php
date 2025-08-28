@@ -31,7 +31,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user           = auth()->user();
-        $menu_service   = new \App\Services\Central\Menu\MenuService;
+        $menu_service   = new \App\Services\Shared\Menu\MenuService;
         $dataArr    = [
             ...parent::share($request),
             'app' => [
@@ -52,7 +52,8 @@ class HandleInertiaRequests extends Middleware
             $authData   = [
                 'auth' => [
                     'user' => [
-                        'name' => $user->name
+                        'name'      => $user->name,
+                        'isTenant'  => tenancy()->initialized,
                     ],
                     'menu' => $menu_service->getMenu()
                 ],

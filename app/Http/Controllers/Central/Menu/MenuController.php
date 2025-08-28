@@ -18,7 +18,7 @@ class MenuController extends Controller
                         ->orderBy('order')
                         ->get()
                         ->toArray();
-        $service    = new \App\Services\Central\Menu\MenuService;
+        $service    = new \App\Services\Shared\Menu\MenuService;
         $treeData   = $service->buildTree($flat);
 
         $returnArr  = [
@@ -142,7 +142,7 @@ class MenuController extends Controller
         try {
             $tree = $request->input('tree'); // or from DB
 
-            $service = new \App\Services\Central\Menu\MenuService;
+            $service = new \App\Services\Shared\Menu\MenuService;
             $flatten = $service->flattenTree($tree);
 
             foreach ($flatten as $item) {
@@ -164,7 +164,6 @@ class MenuController extends Controller
             return to_route('central.menu.index')->with($result);
         } catch (\Throwable $th) {
             DB::rollback();
-            dd($th);
             $result = array("severity" => "error", "summary" => "Update", "detail" => "Failed to update information");
             return to_route('central.menu.index')->with($result);
         }

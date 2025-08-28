@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Central\ACL;
 
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
-use App\Services\DataTableService;
+use App\Services\Shared\Datatable\DataTableService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Str;
@@ -52,7 +52,7 @@ class PermissionController extends Controller
     {
         DB::beginTransaction();
         try {
-            $service = new \App\Services\Central\ACL\PermissionService;
+            $service = new \App\Services\Shared\ACL\PermissionService;
             $service->generatePermission();
 
             DB::commit();

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Central\ACL;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
-use App\Services\DataTableService;
+use App\Services\Shared\Datatable\DataTableService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Str;

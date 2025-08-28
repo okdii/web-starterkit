@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Central\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\DataTableService;
+use App\Services\Shared\Datatable\DataTableService;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;

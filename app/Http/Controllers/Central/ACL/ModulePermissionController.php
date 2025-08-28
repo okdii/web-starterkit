@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Central\ACL;
 
 use App\Http\Controllers\Controller;
-use App\Services\DataTableService;
+use App\Services\Shared\Datatable\DataTableService;
 use App\Models\Module;
 use App\Models\ModulePermission;
 use App\Models\Permission;

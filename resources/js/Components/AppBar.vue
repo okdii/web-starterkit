@@ -1,9 +1,11 @@
 <script setup>
 import { ref } from "vue";
-import { Link, useForm, router } from "@inertiajs/vue3";
+import { Link, useForm, router, usePage } from "@inertiajs/vue3";
 import Menubar from "primevue/menubar";
 
 defineEmits(["toggle-menu"]);
+
+const page = usePage();
 
 /**
  * Menu
@@ -17,7 +19,11 @@ const items = ref([
                 label: "Profile",
                 icon: "pi pi-user",
                 command: () => {
-                    router.visit(route("shared.profile.edit"));
+                    router.visit(
+                        page.props.auth.user.isTenant
+                            ? route("tenant.profile.edit")
+                            : route("central.profile.edit")
+                    );
                 },
             },
             /* {
@@ -37,7 +43,10 @@ const items = ref([
                 icon: "pi pi-sign-out",
                 command: () => {
                     // Logout
-                    useForm({}).post(route("shared.logout"));
+                    let logout = page.props.auth.user.isTenant
+                        ? route("tenant.logout")
+                        : route("central.logout");
+                    useForm({}).post(logout);
                 },
             },
         ],

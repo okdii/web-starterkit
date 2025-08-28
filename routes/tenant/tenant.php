@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,21 +16,36 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 |
 */
 
-Route::middleware([
-        'web',
-        InitializeTenancyByDomainOrSubdomain::class,
-        PreventAccessFromCentralDomains::class,
-    ])
-    ->group(function () {
+Route::get('/testing', function () {
+    /* dd([
+        'tenant' => tenancy()->tenant,
+        'db' => \DB::connection()->getDatabaseName(),
+    ]); */
+    dd(\App\Models\User::all());
+    return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+});
 
-        Route::get('dashboard', [\App\Http\Controllers\Tenant\Dashboard\DashboardController::class, 'index'])
-            ->name('dashboard');
+Route::get('dashboard', [\App\Http\Controllers\Tenant\Dashboard\DashboardController::class, 'index'])
+    ->name('dashboard');
+
+/**
+ * USER
+ */
+Route::resource('user', App\Http\Controllers\Tenant\User\UserController::class)->names('user');
 
 
+/**
+ * AJAX
+ */
+Route::group([
+    'prefix' => 'ajax',
+    'as' => 'ajax.',
+], function () {
 
+    /**
+     * USER
+     */
+    Route::post('user/dt-user', [\App\Http\Controllers\Tenant\User\UserController::class, 'getUserDt'])
+        ->name('user.dt-user');
 
-        /* Route::get('/testing', function () {
-            // dd(\App\Models\User::all());
-            return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
-        }); */
 });
