@@ -52,6 +52,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        if (tenancy()->initialized) {
+            return redirect()->intended(route('tenant.login', absolute: false));
+        } else {
+            return redirect()->intended(route('central.login', absolute: false));
+        }
     }
 }
