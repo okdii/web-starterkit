@@ -10,6 +10,7 @@ import { ref } from "vue";
 const props = defineProps({
     user: Object,
     list_role: Object,
+    list_status: Object,
     isCreate: Boolean,
     title: String,
 });
@@ -23,6 +24,7 @@ const formDetail = {
         name: props.user?.name,
         email: props.user?.email,
         role: props.user?.roleSlug,
+        status: props.user?.status,
     },
     validationSchema: yup.object({
         name: yup.string().required("Name is required"),
@@ -31,6 +33,7 @@ const formDetail = {
             .email("Invalid email")
             .required("Email is required"),
         role: yup.array().required("Role is required"),
+        status: yup.string().required("Status is required"),
     }),
 };
 const form = inertiaUseForm(formDetail.initialValues);
@@ -39,6 +42,7 @@ const errors = formValidator.errors;
 const [name] = formValidator.defineField("name");
 const [email] = formValidator.defineField("email");
 const [role] = formValidator.defineField("role");
+const [status] = formValidator.defineField("status");
 </script>
 
 <template>
@@ -109,6 +113,28 @@ const [role] = formValidator.defineField("role");
                         size="small"
                         variant="simple"
                         >{{ errors.role ?? form?.errors.role }}</Message
+                    >
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="status">Status</label>
+                    <Select
+                        name="status"
+                        :options="list_status"
+                        v-model="status"
+                        optionLabel="name"
+                        optionValue="id"
+                        :invalid="errors.status || form?.errors?.status"
+                        placeholder="Select a status"
+                        fluid
+                        filter
+                        showClear
+                    />
+                    <Message
+                        v-if="errors.status || form?.errors?.status"
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        >{{ errors.status ?? form?.errors.status }}</Message
                     >
                 </div>
             </template>

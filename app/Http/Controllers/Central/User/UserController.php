@@ -73,9 +73,10 @@ class UserController extends Controller
         $list_role = \App\Models\Role::select(['id', 'name'])->orderBy('name')->get();
 
         $returnArr = [
-            'isCreate'  => true,
-            'title'     => 'Create New User',
-            'list_role' => $list_role
+            'isCreate'      => true,
+            'title'         => 'Create New User',
+            'list_role'     => $list_role,
+            'list_status'   => \App\Enums\UserStatus::toSelectValue()
         ];
 
         return Inertia::render('Central/User/Form', $returnArr);
@@ -84,9 +85,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'role'  => 'required|array',
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'role'      => 'required|array',
+            'status'    => 'required',
         ]);
 
         DB::beginTransaction();
@@ -94,6 +96,7 @@ class UserController extends Controller
             $user           = new User();
             $user->name     = $validate['name'];
             $user->email    = $validate['email'];
+            $user->status   = $validate['status'];
             $user->password = Hash::make('123456');
             if (count($validate['role']) > 0) {
                 $user->role = array_map(fn ($item) => \App\Models\Role::decodeSlug($item), $validate['role']);
@@ -130,10 +133,11 @@ class UserController extends Controller
         $list_role = \App\Models\Role::select(['id', 'name'])->orderBy('name')->get();
 
         $returnArr = [
-            'user'      => $user,
-            'isCreate'  => false,
-            'title'     => 'Update User',
-            'list_role' => $list_role
+            'user'        => $user,
+            'isCreate'    => false,
+            'title'       => 'Update User',
+            'list_role'   => $list_role,
+            'list_status' => \App\Enums\UserStatus::toSelectValue()
         ];
 
         return Inertia::render('Central/User/Form', $returnArr);
@@ -152,12 +156,14 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->id),
             ],
             'role'  => 'required|array',
+            'status' => 'required',
         ]);
         
         DB::beginTransaction();
         try {
             $user->name     = $validate['name'];
             $user->email    = $validate['email'];
+            $user->status   = $validate['status'];
             if (count($validate['role']) > 0) {
                 $user->role = array_map(fn ($item) => \App\Models\Role::decodeSlug($item), $validate['role']);
             }
